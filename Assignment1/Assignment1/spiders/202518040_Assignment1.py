@@ -2,7 +2,7 @@ import scrapy
 from ..items import Assignment1Item
 
 class BooksSpider(scrapy.Spider):
-    name = "books"  # spider name
+    name = "books" 
     start_urls = [
         'https://books.toscrape.com/'
     ]
@@ -13,7 +13,7 @@ class BooksSpider(scrapy.Spider):
         for book in all_books:
             items = Assignment1Item()
 
-            # Extracting data
+            
             items['book_name'] = book.css('h3 a::attr(title)').get()
             items['book_price'] = book.css('p.price_color::text').get()
             items['book_availability'] = ''.join(book.css('p.availability::text').getall()).strip()
@@ -21,7 +21,7 @@ class BooksSpider(scrapy.Spider):
 
             yield items
 
-        # Handling pagination
+       
         next_page = response.css('li.next a::attr(href)').get()
         if next_page:
             yield response.follow(next_page, callback=self.parse)
